@@ -1,0 +1,307 @@
+<!doctype html>
+<!--
+  medium-style-blog.html
+  Açık tema, tek dosyada çalışan Medium-benzeri blog ana sayfa + örnek yazı düzeni.
+  Kullanım: Dosyayı kaydet (ör. medium-style-blog.html) ve tarayıcıda aç.
+-->
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Örnek Medium Stilinde Blog</title>
+  <meta name="description" content="Örnek Medium tarzı blog — açık tema, responsive HTML/CSS tek dosya." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #ffffff;
+      --surface: #f7f7f8;
+      --text: #0f1723;
+      --muted: #6b7280;
+      --accent: #2b6cb0; /* mavi aksan */
+      --card-shadow: 0 6px 18px rgba(17,24,39,0.06);
+      --radius: 12px;
+      --max-width: 1100px;
+      --content-width: 680px;
+    }
+
+    /* Reset-ish */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.6;
+    }
+
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Layout */
+    .wrap{
+      max-width:var(--max-width);
+      margin:32px auto;
+      padding:0 20px;
+    }
+
+    header.site-header{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:16px;padding:18px 0;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#0ea5e9);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;box-shadow:var(--card-shadow);
+    }
+    .site-title{font-weight:700;font-size:18px}
+    .site-tag{font-size:13px;color:var(--muted)}
+
+    /* nav actions */
+    .nav-actions{display:flex;align-items:center;gap:12px}
+    .btn{background:transparent;border:1px solid transparent;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+    .btn.ghost{border-color:transparent}
+    .btn.primary{background:var(--accent);color:white;border-color:transparent}
+    .search{display:flex;align-items:center}
+    .search input{padding:8px 12px;border-radius:999px;border:1px solid #e6e9ee;background:#fff;min-width:160px}
+
+    /* Hero */
+    .hero{
+      margin:18px 0 28px;padding:28px;border-radius:14px;background:linear-gradient(180deg, rgba(43,108,176,0.06), rgba(43,108,176,0.02));display:flex;gap:20px;align-items:center;box-shadow:var(--card-shadow);
+    }
+    .hero .hero-left{flex:1;max-width:var(--content-width)}
+    .hero h1{font-family:'Merriweather', serif;margin:0;font-size:28px}
+    .hero p{margin-top:8px;color:var(--muted)}
+    .hero .cta{margin-top:12px}
+
+    /* Grid */
+    .layout{display:grid;grid-template-columns:1fr 320px;gap:28px}
+
+    /* Post card */
+    .posts{display:flex;flex-direction:column;gap:20px}
+    .post{display:flex;gap:18px;padding:18px;border-radius:12px;background:var(--surface);box-shadow:var(--card-shadow);align-items:flex-start}
+    .post .thumb{width:140px;height:96px;border-radius:8px;background-size:cover;background-position:center;flex-shrink:0}
+    .post .info{flex:1}
+    .post .meta{font-size:13px;color:var(--muted)}
+    .post h2{margin:6px 0;font-size:18px}
+    .post p.excerpt{margin:0;color:var(--muted)}
+
+    /* Sidebar */
+    aside.sidebar{position:relative}
+    .card{background:var(--surface);padding:16px;border-radius:12px;box-shadow:var(--card-shadow)}
+    .subscribe input[type=email]{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ee;margin-top:8px}
+    .subscribe button{width:100%;margin-top:8px;padding:10px;border-radius:8px;border:0;background:var(--accent);color:white;font-weight:700}
+
+    .popular li{margin-bottom:10px}
+    .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+    .tag{font-size:13px;padding:6px 10px;border-radius:999px;background:white;border:1px solid #eef2ff}
+
+    footer.site-footer{margin-top:40px;padding:28px 0;color:var(--muted);border-top:1px solid #eef2f6}
+
+    /* Article page styles (anchor target) */
+    .article{
+      max-width:var(--content-width);margin:0 auto;padding:20px 0;
+    }
+    .article .cover{width:100%;height:320px;border-radius:12px;background-size:cover;background-position:center;margin-bottom:18px}
+    .article h1{font-family:'Merriweather', serif;font-size:34px;margin:6px 0}
+    .author-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .author-row img{width:44px;height:44px;border-radius:999px}
+    .article .content p{margin-bottom:14px;color:var(--text)}
+    .content h2{font-size:22px;margin:18px 0}
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .layout{grid-template-columns:1fr}
+      aside.sidebar{order:2}
+      .hero{flex-direction:column;align-items:flex-start}
+      .post{flex-direction:column}
+      .post .thumb{width:100%;height:220px}
+    }
+
+    @media (max-width:480px){
+      .brand .site-title{display:none}
+      .search input{display:none}
+      .hero h1{font-size:22px}
+    }
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <div class="brand">
+        <div class="logo">B</div>
+        <div>
+          <div class="site-title">BlogBaslik</div>
+          <div class="site-tag">Düşünceler • Denemeler • Rehberler</div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <div class="search" role="search">
+          <input type="search" placeholder="Ara..." aria-label="Ara" />
+        </div>
+        <button class="btn">Keşfet</button>
+        <button class="btn">Giriş</button>
+        <button class="btn primary">Yazı Gönder</button>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-left">
+        <h1 id="hero-title">Hikayelerini paylaş, dünyayı etkileyen fikirleri oku.</h1>
+        <p>Uzun format yazılar, rehberler ve kişisel denemeler. Okumaya başlamak için aşağıdaki makalelerimize göz at.</p>
+        <div class="cta"><a class="btn primary" href="#posts">İlginç Yazılar</a></div>
+      </div>
+      <div class="hero-right" style="min-width:220px;">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop&crop=faces&sat=-100" alt="hero" style="width:220px;height:140px;border-radius:10px;object-fit:cover;box-shadow:var(--card-shadow)"/>
+      </div>
+    </section>
+
+    <div class="layout">
+      <!-- Main content -->
+      <main>
+        <section id="posts" class="posts" aria-live="polite">
+
+          <!-- Post 1 -->
+          <article class="post" aria-labelledby="p1-title">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1506355683713-5d62b0f1b2c7?q=80&w=800&auto=format&fit=crop&crop=faces')" role="img" aria-label="Kapak görsel"></div>
+            <div class="info">
+              <div class="meta">John Doe • 6 dk okuma • 3 May 2025</div>
+              <h2 id="p1-title"><a href="#article1">Nasıl Daha İyi Yazılır: 10 Basit Alışkanlık</a></h2>
+              <p class="excerpt">Yazma pratiğini günlük rutinin bir parçası haline getirerek fikirlerini netleştirebilirsin. Bu yazıda basit ve uygulanabilir 10 alışkanlığı inceliyoruz.</p>
+            </div>
+          </article>
+
+          <!-- Post 2 -->
+          <article class="post" aria-labelledby="p2-title">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=800&auto=format&fit=crop&crop=faces')" role="img" aria-label="Kapak görsel"></div>
+            <div class="info">
+              <div class="meta">Ayşe Yılmaz • 4 dk okuma • 28 Mar 2025</div>
+              <h2 id="p2-title"><a href="#article2">Uzaktan Çalışma için Etkili İletişim</a></h2>
+              <p class="excerpt">Ekip içi yanlış anlamaları azaltmak ve net teslimatlar için uygulanabilir iletişim yöntemleri.</p>
+            </div>
+          </article>
+
+          <!-- Post 3 -->
+          <article class="post" aria-labelledby="p3-title">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=800&auto=format&fit=crop&crop=faces')" role="img" aria-label="Kapak görsel"></div>
+            <div class="info">
+              <div class="meta">Mert K. • 8 dk okuma • 12 Feb 2025</div>
+              <h2 id="p3-title"><a href="#article3">Tasarım Düşüncesi: Problem Çözmenin Yolu</a></h2>
+              <p class="excerpt">Kullanıcı odaklı düşünme, prototipleme ve hızlı geri bildirim döngüleri üzerine bir rehber.</p>
+            </div>
+          </article>
+
+        </section>
+
+        <!-- Example article sections (anchor-linked) -->
+        <section id="article1" class="article" aria-labelledby="a1-title">
+          <div class="cover" style="background-image:url('https://images.unsplash.com/photo-1506355683713-5d62b0f1b2c7?q=80&w=1200&auto=format&fit=crop')"></div>
+          <h1 id="a1-title">Nasıl Daha İyi Yazılır: 10 Basit Alışkanlık</h1>
+          <div class="author-row">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop&crop=faces" alt="Yazar avatar" />
+            <div>
+              <div style="font-weight:700">John Doe</div>
+              <div class="muted">Yayınlandı: 3 May 2025 • 6 dk okuma</div>
+            </div>
+          </div>
+          <div class="content">
+            <p>Yazma bir beceridir ve diğer beceriler gibi düzenli uygulama ile gelişir. Aşağıda her gün veya her hafta uygulayabileceğin 10 alışkanlığı bulacaksın.</p>
+            <h2>Kısa ve sık aralıklarla yaz</h2>
+            <p>Kendine her gün 15-20 dakika ayır. Bu süre, fikir üretme ve akışa girme için ideal.</p>
+            <h2>Okuyup not al</h2>
+            <p>İlham aldığın metinlerin altını çiz ve kısa notlar al. Bu notlar zamanla kendi sesinin gelişmesine yardımcı olur.</p>
+            <p><em>Bu örnek yazı içeriği demonstrasyondur.</em></p>
+          </div>
+        </section>
+
+        <section id="article2" class="article" aria-labelledby="a2-title">
+          <div class="cover" style="background-image:url('https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop')"></div>
+          <h1 id="a2-title">Uzaktan Çalışma için Etkili İletişim</h1>
+          <div class="author-row">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop&crop=faces" alt="Yazar avatar" />
+            <div>
+              <div style="font-weight:700">Ayşe Yılmaz</div>
+              <div class="muted">Yayınlandı: 28 Mar 2025 • 4 dk okuma</div>
+            </div>
+          </div>
+          <div class="content">
+            <p>Uzaktan ekiplerde açık, kısa ve tekrarlanabilir iletişim kanalları kurmak verimliliği artırır. Örnekler: günlük 15 dakikal standup, asenkron yazışma kuralları, açık dosya isimlendirme.</p>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="card subscribe" aria-labelledby="sub-title">
+          <h3 id="sub-title">Bültene Kaydol</h3>
+          <p class="muted">Haftalık en iyi yazılar doğrudan gelen kutuna gelsin.</p>
+          <form onsubmit="event.preventDefault();alert('Teşekkürler — demo abonelik!');">
+            <label for="email" class="muted" style="font-size:13px">E-posta</label>
+            <input id="email" type="email" placeholder="you@example.com" required />
+            <button type="submit">Abone Ol</button>
+          </form>
+        </div>
+
+        <div style="height:16px"></div>
+
+        <div class="card popular" aria-labelledby="pop-title">
+          <h4 id="pop-title">Popüler Yazılar</h4>
+          <ul style="list-style:none;padding:0;margin:8px 0 0 0">
+            <li><a href="#article1">Nasıl Daha İyi Yazılır</a></li>
+            <li><a href="#article3">Tasarım Düşüncesi</a></li>
+            <li><a href="#article2">Uzaktan Çalışma için Etkili İletişim</a></li>
+          </ul>
+        </div>
+
+        <div style="height:16px"></div>
+
+        <div class="card">
+          <h4>Etiketler</h4>
+          <div class="tags">
+            <span class="tag">Tasarım</span>
+            <span class="tag">Yazma</span>
+            <span class="tag">Verimlilik</span>
+            <span class="tag">Kariyer</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="site-footer">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:center">
+        <div>© 2025 BlogBaslik — Tüm hakları saklıdır.</div>
+        <nav style="display:flex;gap:12px">
+          <a href="#">Hakkımızda</a>
+          <a href="#">Gizlilik</a>
+          <a href="#">İletişim</a>
+        </nav>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Küçük UX: URL hash değiştiğinde sayfayı o bölüme yumuşak kaydır
+    if('scrollBehavior' in document.documentElement.style){
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', e=>{
+          const target = document.querySelector(a.getAttribute('href'));
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+            history.replaceState(null, '', a.getAttribute('href'));
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
